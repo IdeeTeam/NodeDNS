@@ -28,7 +28,7 @@ exports.login = function (req,res) {
                         if(same) {
                            // user.token = jwt.sign(user,process.env.SECRET_KEY);
                             console.log(user.token);
-                            res.status(200).json(user.token);
+                            res.status(200).json({"token": user.token});
 
                         }
                         else {
