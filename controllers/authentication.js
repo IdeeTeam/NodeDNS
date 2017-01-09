@@ -26,7 +26,7 @@ exports.login = function (req,res) {
                     }
                     else {
                         if(same) {
-                           // user.token = jwt.sign(user,proces.env.SECRET_KEY);
+                           // user.token = jwt.sign(user,process.env.SECRET_KEY);
                             console.log(user.token);
                             res.status(200).json(user.token);
 
@@ -49,7 +49,7 @@ exports.login = function (req,res) {
 exports.authenticate = function(req,res,next){
     var token = req.headers.token;
     if(token) {
-        jwt.verify(token,proces.env.SECRET_KEY,function (err,decode) {
+        jwt.verify(token,process.env.SECRET_KEY,function (err,decode) {
             if(err) {
                 res.status(500).json("Bad token");
             }

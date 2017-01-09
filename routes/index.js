@@ -13,4 +13,15 @@ router.get('/', function(req, res, next) {
 router.route('/createuser').post(userController.createUser);
 router.route('/login').post(authController.login);
 
+
+const redisController = require('../controllers/redis');
+
+
+//router.use(authController.authenticate);
+
+router.route('/servercheckin').post(authController.authenticate, redisController.serverCheckIn);
+router.route('/getip').post(redisController.getIP);
+
+
+
 module.exports = router;
