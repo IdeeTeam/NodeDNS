@@ -12,15 +12,33 @@ client.on("connect", function () {
 
 exports.serverCheckIn = function (req, res) {
 
-    if (req.body.url && req.body.ip) {
-        client.set(req.body.url, req.body.ip);
-        client.expire(req.body.url, 90);
-        res.status(200).json("Success");
+    var address = req.connection.remoteAddress;
+
+    if (address == '::1') {
+        if (req.body.url) {
+            var pomUrl = req.body.url + '.idee.com';
+            client.set(pomUrl,'127.0.0.1');
+            client.expire(pomUrl, 90);
+            res.status(200).json("Success");
+        }
+        else {
+            res.status(400).json("Bad request");
+        }
     }
     else {
-        res.status(400).json("Bad request");
+        console.log(address);
+        if (req.body.url) {
+            //ovde fali ip address formating
+            var pomUrl2 = req.body.url + '.idee.com';
+            client.set(pomUrl2, address);
+            client.expire(pomUrl2, 90);
+            res.status(200).json("Success");
+        }
+        else {
+            res.status(400).json("Bad request");
+        }
     }
-}
+};
 
 exports.getIP = function (req, res) {
 
@@ -40,4 +58,23 @@ exports.getIP = function (req, res) {
     else {
         res.status(400).json("Bad request");
     }
-}
+};
+
+exports.getIPaddress = function(address, next) {
+     if (address) {
+        client.get(address, function (err, reply) {
+            if (err) {
+                next(null);
+            }
+            else if (!reply) {
+                next(null);
+            }
+            else {
+                next(reply);
+            }
+        })
+    }
+    else {
+        next(null);
+    }
+};

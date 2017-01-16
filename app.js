@@ -50,4 +50,25 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var redis = require('./controllers/redis');
+const dnsd = require('dnsd');
+dnsd.createServer(function (req,res) {
+  var address = req.question[0].name;
+  if(address!=null) {
+    console.log(req);
+    redis.getIPaddress(address, function (pom) {
+      if (pom != null) {
+        res.end(pom);
+      }
+      else {
+        res.end();
+      }
+    });
+  }
+  else {
+    res.end();
+  }
+
+
+}).listen(53,'127.0.0.1');
 module.exports = app;

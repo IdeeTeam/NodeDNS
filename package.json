@@ -10,11 +10,16 @@
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
+    "dnsd": "^0.9.6",
     "express": "~4.14.0",
+    "ip": "^1.1.4",
+    "ipaddr.js": "^1.2.0",
+    "ipware": "^1.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.2.1",
     "morgan": "~1.7.0",
     "redis": "^2.6.3",
+    "request-ip": "^1.2.3",
     "serve-favicon": "~2.3.0"
   }
 }
