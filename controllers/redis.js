@@ -33,8 +33,8 @@ exports.serverCheckIn = function (req, res) {
     var address = req.connection.remoteAddress;
 
     if (address == '::1') {
-        if (req.body.url) {
-            var pomUrl = req.body.url + '.idee.com';
+        if (req.body.url && req.body.username) {
+            var pomUrl = req.body.url + '.'+ req.body.username + '.idee.com';
             client.set(pomUrl,'127.0.0.1');
             client.expire(pomUrl, 90);
             res.status(200).json("Success");
@@ -45,9 +45,9 @@ exports.serverCheckIn = function (req, res) {
     }
     else {
         console.log(address);
-        if (req.body.url) {
+        if (req.body.ur && req.body.username) {
             //ovde fali ip address formating
-            var pomUrl2 = req.body.url + '.idee.com';
+            var pomUrl2 = req.body.url + '.' + req.body.username + '.idee.com';
             client.set(pomUrl2, address);
             client.expire(pomUrl2, 90);
             res.status(200).json("Success");
