@@ -5,6 +5,18 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const redis = require('./redis');
+const nodemailer = require('nodemailer');
+//const transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+ var transporter = nodemailer.createTransport("SMTP", {
+     service: 'Gmail',
+     auth: {
+         user: 'idee.verify',
+         pass: 'flatulencija'
+     }
+ });
+
+
 var User = require('../Schemas/User');
 
 process.env.SECRET_KEY = "UserAuthKey";
@@ -15,7 +27,7 @@ exports.createUser = function(req,res){
     {
         User.find({$or:[{"username":req.body.username},{"email":req.body.email}]},function (err,users) {
             if(err) {
-                res.status(500).json("An error occured");
+                res.status(500).json("An error occurred");
             }
             else if(users && users.length!=0){
                 console.log("ako je naso nekog");
@@ -24,7 +36,7 @@ exports.createUser = function(req,res){
             else {
                 bcrypt.hash(req.body.password,10,function (err,hash) {
                     if(err){
-                        res.status(500).json("An error occured");
+                        res.status(500).json("An error occurred");
                     }
                     else {
                         console.log("new user");
@@ -39,11 +51,31 @@ exports.createUser = function(req,res){
                                 });
                         user.save(function (err) {
                             if(err) {
-                                res.status(500).json("An error occured");
+                                res.status(500).json("An error occurred");
                             }
                             else {
+                                var time = Date.now();
+                                var link = "127.0.0.1:3000/verify/" + time;
+                                redis.pushVerificationLink(time, user.username);
 
-                                res.status(200).json(user);
+                                var mailOptions = {
+                                    to: user.email,
+                                    subject: 'Account verification',
+                                    html: '<h1> Idee DNS</h1> <br /> \
+                                    <br /> <h2> Click on the link below to verify your account \
+                                    <br /> <link href = "'+ link + '">' + link + '</link></h2>'
+                                };
+
+                                transporter.sendMail(mailOptions, function (err, info) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        console.log(info);
+                                    }
+                                    res.status(200).json(user);
+
+                                });
 
                             }
 

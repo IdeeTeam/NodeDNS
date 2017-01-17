@@ -19,6 +19,8 @@ const redisController = require('../controllers/redis');
 
 //router.use(authController.authenticate);
 
+router.route('/verify/:link').get(redisController.verify);
+
 router.route('/servercheckin').post(authController.authenticate, redisController.serverCheckIn);
 router.route('/getip').post(redisController.getIP);
 

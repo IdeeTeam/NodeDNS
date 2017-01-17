@@ -13,11 +13,14 @@ exports.login = function (req,res) {
     if(req.body.username&&req.body.password) {
         User.findOne({"username":req.body.username},function (err,user) {
             if(err) {
-                res.status(500).json("An error occured");
+                res.status(500).json("An error occurred");
             }
             else if(!user) {
                 res.status(400).json("Doesn't exist user with given username")
             }
+            else if (!user.verified) {
+                res.status(400).json("User not verified");
+            }    
             else {
                 bcrypt.compare(req.body.password,user.password,function (err,same) {
                     if(err) {
