@@ -45,8 +45,10 @@ exports.serverCheckIn = function (req, res) {
     }
     else {
         console.log(address);
-        if (req.body.ur && req.body.username) {
-            //ovde fali ip address formating
+        if (req.body.url && req.body.username) {
+            if (address.substr(0, 7) == "::ffff:") {
+                address = address.substr(7);
+            }
             var pomUrl2 = req.body.url + '.' + req.body.username + '.idee.com';
             client.set(pomUrl2, address);
             client.expire(pomUrl2, 90);
