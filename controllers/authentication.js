@@ -16,7 +16,7 @@ exports.login = function (req,res) {
                 res.status(500).json("An error occurred");
             }
             else if(!user) {
-                res.status(400).json("Doesn't exist user with given username")
+                res.status(400).json("User with given username doesn't exist");
             }
             else if (!user.verified) {
                 res.status(400).json("User not verified");
@@ -29,8 +29,6 @@ exports.login = function (req,res) {
                     }
                     else {
                         if(same) {
-                           // user.token = jwt.sign(user,process.env.SECRET_KEY);
-                            console.log(user.token);
                             res.status(200).json({"token": user.token});
 
                         }

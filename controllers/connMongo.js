@@ -1,6 +1,5 @@
-/**
- * Created by Stefan on 1/8/2017.
- */
+//Zapravo se ne koristi, konekcija se otvara u app.js
+
 var mongoose = require('mongoose');
 
 var db = mongoose.connection;

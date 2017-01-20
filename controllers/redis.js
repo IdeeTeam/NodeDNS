@@ -8,23 +8,23 @@ const User = require("../Schemas/User");
 const client = redis.createClient();
 client.select(1, function (err, res) {
     if (err) {
-        console.log('I\'m not very happy');
+        console.log('Redis client 1 error');
     }
     else {
-        console.log('I like unicorns, they make me tranquil');
+        console.log('Redis client 1 up');
     }
 });
-client.on("connect", function () {
-    console.log("Redis up and running, petty human.")
-});
+// client.on("connect", function () {
+//     console.log("Redis up and running")
+// });
 
 const client2 = redis.createClient();
 client2.select(2, function (err, res) {
     if (err) {
-        console.log('This ain\'t working for me.');
+        console.log('Redis client 2 error');
     }
     else {
-        console.log('I see bright stars');
+        console.log('Redis client 2 up');
     }
 });
 
@@ -49,6 +49,7 @@ exports.serverCheckIn = function (req, res) {
             if (address.substr(0, 7) == "::ffff:") {
                 address = address.substr(7);
             }
+            console.log(address);
             var pomUrl2 = req.body.url + '.' + req.body.username + '.idee.com';
             client.set(pomUrl2, address);
             client.expire(pomUrl2, 90);

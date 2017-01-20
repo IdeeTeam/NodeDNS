@@ -1,8 +1,9 @@
-/**
- * Created by Stefan on 1/8/2017.
- */
+//trenutno se ne koristi, sigurne rute su u index.js
+
+
 const express = require('express');
 const router = express.Router();
+
 
 // const authController = require('../controllers/authentication');
 // const redisController = require('../controllers/redis');

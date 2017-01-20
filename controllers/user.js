@@ -12,7 +12,7 @@ const nodemailer = require('nodemailer');
      service: 'Gmail',
      auth: {
          user: 'idee.verify',
-         pass: 'flatulencija'
+         pass: 'droptablegoogle'
      }
  });
 
